@@ -1,7 +1,11 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => res.send("Hello, world!"));
+app.get("/", (req, res) => res.send("Homepage"));
+
+app.use("/auth", authRouter);
+app.use("/post", postRouter);
+app.use("/comment", commentRouter);
 
 const PORT = 3000;
 app.listen(PORT, (error) => {
