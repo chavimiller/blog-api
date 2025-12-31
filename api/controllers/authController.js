@@ -12,11 +12,18 @@ async function signUpGet(req, res) {
 }
 
 // post signup
+async function signUpPost(req, res) {
+  try {
+  } catch (err) {
+    console.error("ERROR with signUpPost: " + err);
+    res.status(500).send("Server error");
+  }
+}
 
 // get login
 async function loginGet(req, res) {
   try {
-    res.render("login", { errors: [], data: [] });
+    res.render("login");
   } catch (err) {
     console.error("ERROR with loginGet: ", err);
     res.status(500).send("Server error");
@@ -24,7 +31,19 @@ async function loginGet(req, res) {
 }
 
 // post login
+async function loginPost(req, res) {
+  try {
+    "/login",
+      passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/",
+      });
+  } catch (err) {
+    console.error("ERROR with loginPost: ", err);
+    res.status(500).send("Server error");
+  }
+}
 
 // get logout
 
-module.exports = { signUpGet, loginGet };
+module.exports = { signUpGet, signUpPost, loginGet, loginPost };
