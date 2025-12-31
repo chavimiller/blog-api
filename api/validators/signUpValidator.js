@@ -1,7 +1,7 @@
 const { body } = require("express-validator");
 
 const validateUser = [
-  body("userName")
+  body("username")
     .trim()
     .escape()
     .notEmpty()

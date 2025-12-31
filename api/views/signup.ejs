@@ -16,12 +16,12 @@
       </div>
       <% } %>
       <form action="/auth/signup" method="POST" autocomplete="off">
-        <label for="userName">Username</label>
+        <label for="username">Username</label>
         <input
           type="text"
-          name="userName"
+          name="username"
           placeholder="Username"
-          value="<%= data ? data.userName : '' %>"
+          value="<%= data ? data.username : '' %>"
           required
         />
 
