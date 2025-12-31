@@ -1,4 +1,5 @@
 // const prisma = require("../prisma");
+const { body, validationResult } = require("express-validator");
 
 // get signup
 async function signUpGet(req, res) {
