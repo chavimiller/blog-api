@@ -3,6 +3,10 @@ const app = express();
 const authRouter = require("./routes/authRouter");
 const postRouter = require("./routes/postRouter");
 const commentRouter = require("./routes/commentRouter");
+const path = require("node:path");
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 app.get("/", (req, res) => res.send("Homepage"));
 
