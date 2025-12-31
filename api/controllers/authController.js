@@ -1,5 +1,12 @@
 // const prisma = require("../prisma");
-const { body, validationResult } = require("express-validator");
+
+const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+
+async function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  return res.redirect("/auth/login");
+}
 
 // get signup
 async function signUpGet(req, res) {
@@ -14,6 +21,12 @@ async function signUpGet(req, res) {
 // post signup
 async function signUpPost(req, res) {
   try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+    //  req.body.username,
+    //  hashedPassword,
+    // ]);
+    res.redirect("/auth/login");
   } catch (err) {
     console.error("ERROR with signUpPost: " + err);
     res.status(500).send("Server error");
@@ -45,5 +58,17 @@ async function loginPost(req, res) {
 }
 
 // get logout
+async function logout(req, res) {
+  try {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  } catch (err) {
+    console.error("ERROR with logout: " + err);
+  }
+}
 
-module.exports = { signUpGet, signUpPost, loginGet, loginPost };
+module.exports = { signUpGet, signUpPost, loginGet, loginPost, logout };
