@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/main.css" />
     <title>Signup</title>
   </head>
   <body>
@@ -17,32 +16,17 @@
       </div>
       <% } %>
       <form action="/auth/signup" method="POST" autocomplete="off">
-        <label for="firstName">Firstname</label>
+        <label for="userName">Username</label>
         <input
           type="text"
-          name="firstName"
-          placeholder="First name"
-          value="<%= data ? data.firstName : '' %>"
+          name="userName"
+          placeholder="Username"
+          value="<%= data ? data.userName : '' %>"
           required
         />
 
-        <label for="lastName">Lastname</label>
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last name"
-          value="<%= data ? data.lastName : '' %>"
-          required
-        />
-
-        <label for="username">Username</label>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username or email"
-          value="<%= data ? data.username : '' %>"
-          required
-        />
+        <label> Would you like to be a blog author? </label>
+        <input type="checkbox" name="author" value="yes" />
 
         <label for="password">Password</label>
         <input
