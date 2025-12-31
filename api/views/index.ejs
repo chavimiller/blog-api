@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/homepage.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container section message-container">
+      <header class="home-header">
+        <a class="redirect" href="/auth/logout">Logout</a>
+        <div class="user">
+          <div class="avatar"></div>
+          <div class="user-info">
+            <span class="full-name"
+              ><%= user.first_name %> <%= user.last_name %>
+            </span>
+            <span class="username">@<%= user.username %></span>
+            <div class="role-info">
+              <% if (user.is_member) { %>
+              <span> Club Member | </span>
+              <% } else { %>
+              <a class="join-link" href="/auth/member">Become Member</a>
+              <% } %> <% if (user.is_admin) { %>
+              <span> Admin | </span>
+              <% } else { %>
+              <a class="join-link" href="/auth/admin">Become Admin</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="main-box">
+        <h2 class="user-greeting">Hello, <%= user.first_name %>!</h2>
+        <a href="/message/new"
+          ><button class="new-msg-btn">New Messages</button></a
+        >
+        <% messages.forEach(message => { %>
+        <div class="message-box">
+          <div class="message-header">
+            <div class="avatar"></div>
+            <div class="user-info">
+              <% if (user.is_member || user.is_admin || user.id ===
+              message.user_id) { %>
+              <span class="full-name"
+                ><%= message.first_name %> <%= message.last_name %></span
+              >
+              <span class="username">@<%= message.username %></span>
+              <% } else { %>
+              <span class="full-name">Anonymous</span>
+              <% } %>
+            </div>
+          </div>
+          <div class="message-title"><%= message.title %></div>
+          <div class="message-body"><%= message.message%></div>
+          <div class="bottom-line">
+            <% if (user.is_member || user.is_admin) { %>
+            <div class="timestamp">
+              Posted on <%= message.created_at.toLocaleString() %>
+            </div>
+            <% } %> <% if (user.is_admin) { %>
+            <form
+              class="delete-btn"
+              action="/message/delete/<%= message.id %>"
+              method="POST"
+            >
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+            <% } %>
+          </div>
+        </div>
+        <% }) %>
+      </main>
+    </div>
+  </body>
+</html>
