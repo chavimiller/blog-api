@@ -1,4 +1,4 @@
-// const prisma = require("../prisma");
+const prisma = require("../prisma");
 
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -20,12 +20,22 @@ async function signUpGet(req, res) {
 
 // post signup
 async function signUpPost(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render("signup", {
+      errors: errors.array(),
+      data: req.body,
+    });
+  }
+  const userData = matchedData(req);
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    // await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-    //  req.body.username,
-    //  hashedPassword,
-    // ]);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    await prisma.user.create({
+      data: {
+        username: userData.username,
+        password: hashedPassword,
+      },
+    });
     res.redirect("/auth/login");
   } catch (err) {
     console.error("ERROR with signUpPost: " + err);

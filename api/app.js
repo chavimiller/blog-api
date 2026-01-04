@@ -8,6 +8,9 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
