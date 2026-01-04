@@ -27,7 +27,9 @@ async function signUpPost(req, res) {
       data: req.body,
     });
   }
+
   const userData = matchedData(req);
+
   try {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     await prisma.user.create({
@@ -54,17 +56,17 @@ async function loginGet(req, res) {
 }
 
 // get logout
-async function logout(req, res) {
-  try {
-    req.logout((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.redirect("/");
+async function logout(req, res, next) {
+  req.logout((err) => {
+    if (err) return next(err);
+
+    req.session.destroy((err) => {
+      if (err) return next(err);
+
+      res.clearCookie("connect.sid");
+      res.redirect("/auth/login");
     });
-  } catch (err) {
-    console.error("ERROR with logout: " + err);
-  }
+  });
 }
 
 module.exports = {
@@ -72,6 +74,5 @@ module.exports = {
   signUpGet,
   signUpPost,
   loginGet,
-  loginPost,
   logout,
 };
