@@ -84,7 +84,7 @@ async function editPostGet(req, res) {
       orderBy: { id: "asc" },
     });
 
-    res.render("/homepage" /*{errors: []} */);
+    res.render("/homepage", { errors: [], posts });
   } catch (err) {
     console.error("ERROR with editPostGet: " + err);
     res.status(500).send("Server error: " + err);
@@ -119,6 +119,7 @@ async function deletePost(req, res) {
         userId: req.user.id,
       },
     });
+
     if (!post) return res.status(404).send("Post not found.");
 
     await prisma.post.delete({
@@ -128,6 +129,7 @@ async function deletePost(req, res) {
   } catch (err) {
     console.error("ERROR with deletePost: " + err);
     res.status(500).send("Server error: " + err);
+    å;
   }
 }
 
