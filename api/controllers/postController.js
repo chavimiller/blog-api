@@ -5,6 +5,8 @@ async function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
   return res.redirect("/auth/login");
 }
+
+// CREATE
 // get newPost
 async function newPostGet(req, res) {
   try {
@@ -13,7 +15,6 @@ async function newPostGet(req, res) {
     res.status(500).send("Server error");
   }
 }
-// save newPost and not publish
 
 // post newPost
 async function newPostPost(req, res) {
@@ -29,11 +30,12 @@ async function newPostPost(req, res) {
 
   */
   try {
+    const isPublished = req.body.action === "publish";
     await prisma.post.create({
       data: {
         title: req.body.title,
         content: req.body.content,
-        published: true,
+        published: isPublished,
         author: req.user.username,
       },
     });
@@ -42,6 +44,29 @@ async function newPostPost(req, res) {
     res.status(500).send("Server error: " + err);
   }
 }
+
+// READ
+async function readPostGet(req, res) {
+  const postId = Number(req.params.postId);
+  const post = await prisma.post.findFirst({
+    where: {
+      id: postId,
+      userId: req.user.id,
+    },
+    include: {
+      comments: true,
+    },
+  });
+  if (!post) return res.status(404).send("Post not found.");
+
+  res.render("posts", {
+    errors: [],
+    post,
+    comments: post.comments,
+  });
+}
+
+// UPDATE
 // get editPost
 async function editPostGet(req, res) {
   try {
@@ -54,7 +79,7 @@ async function editPostGet(req, res) {
     });
     if (!post) return res.status(404).send("Post not found.");
 
-    const posts = await prisma.posts.findMany({
+    const posts = await prisma.post.findMany({
       where: { authorId: req.user.id },
       orderBy: { id: "asc" },
     });
@@ -66,7 +91,7 @@ async function editPostGet(req, res) {
   }
 }
 
-async function editPostPush(req, res) {
+async function editPostPut(req, res) {
   try {
     const postId = Number(req.params.postId);
     const title = req.body.title?.trim();
@@ -81,6 +106,8 @@ async function editPostPush(req, res) {
     res.status(500).send("Server error: " + err);
   }
 }
+
+// DELETE
 
 async function deletePost(req, res) {
   try {
@@ -108,7 +135,8 @@ module.exports = {
   ensureAuthenticated,
   newPostGet,
   newPostPost,
+  readPostGet,
   editPostGet,
-  editPostPush,
+  editPostPut,
   deletePost,
 };
