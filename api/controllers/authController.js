@@ -53,20 +53,6 @@ async function loginGet(req, res) {
   }
 }
 
-// post login
-async function loginPost(req, res) {
-  try {
-    "/login",
-      passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/",
-      });
-  } catch (err) {
-    console.error("ERROR with loginPost: ", err);
-    res.status(500).send("Server error");
-  }
-}
-
 // get logout
 async function logout(req, res) {
   try {
@@ -81,4 +67,11 @@ async function logout(req, res) {
   }
 }
 
-module.exports = { signUpGet, signUpPost, loginGet, loginPost, logout };
+module.exports = {
+  ensureAuthenticated,
+  signUpGet,
+  signUpPost,
+  loginGet,
+  loginPost,
+  logout,
+};

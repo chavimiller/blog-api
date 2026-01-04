@@ -10,7 +10,13 @@ authRouter.post("/signup", validateUser, authController.signUpPost);
 
 authRouter.get("/login", authController.loginGet);
 
-authRouter.post("/login", authController.loginPost);
+authRouter.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/auth/login",
+  })
+);
 
 authRouter.get("/logout", authController.logout);
 
