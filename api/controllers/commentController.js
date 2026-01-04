@@ -3,13 +3,15 @@ const { body, validationResult } = require("express-validator");
 
 // get newComment
 
+/*
 async function newCommentGet(req, res) {
   try {
   } catch (err) {
     console.error("ERROR with newCommentGet: " + err);
-    res.status(500).send("Server error");
+    res.status(500).json("Server error");
   }
 }
+  */
 
 async function newCommentPost(req, res) {
   try {
@@ -22,7 +24,7 @@ async function newCommentPost(req, res) {
     });
   } catch (err) {
     console.error("ERROR with newCommentGet: " + err);
-    res.status(500).send("Server error");
+    res.status(500).json("Server error");
   }
 }
 
@@ -61,21 +63,20 @@ async function deleteComment(req, res) {
       },
     });
 
-    if (!comment) return res.status(404).send("Comment not found.");
+    if (!comment) return res.status(404).json("Comment not found.");
 
     await prisma.comment.delete({
       where: { id: commentId },
     });
 
-    res.redirect("/home");
+    res.json({ message: "Post deleted", commentId });
   } catch (err) {
     console.error("ERROR with newCommentGet: " + err);
-    res.status(500).send("Server error");
+    res.status(500).json("Server error");
   }
 }
 
 module.exports = {
-  newCommentGet,
   newCommentPost,
   deleteComment,
 };

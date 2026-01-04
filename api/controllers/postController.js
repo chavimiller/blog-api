@@ -8,13 +8,14 @@ async function ensureAuthenticated(req, res, next) {
 
 // CREATE
 // get newPost
-async function newPostGet(req, res) {
+/* async function newPostGet(req, res) {
   try {
   } catch (err) {
     console.error("ERROR with newPostGet: " + err);
     res.status(500).send("Server error");
   }
 }
+*/
 
 // post newPost
 async function newPostPost(req, res) {
@@ -41,7 +42,7 @@ async function newPostPost(req, res) {
     });
   } catch (err) {
     console.error("ERROR with newPostPost: " + err);
-    res.status(500).send("Server error: " + err);
+    res.status(500).json("Server error: " + err);
   }
 }
 
@@ -57,13 +58,9 @@ async function readPostGet(req, res) {
       comments: true,
     },
   });
-  if (!post) return res.status(404).send("Post not found.");
+  if (!post) return res.status(404).json("Post not found.");
 
-  res.render("posts", {
-    errors: [],
-    post,
-    comments: post.comments,
-  });
+  res.json({ post });
 }
 
 // UPDATE
@@ -77,17 +74,17 @@ async function editPostGet(req, res) {
         userId: req.user.id,
       },
     });
-    if (!post) return res.status(404).send("Post not found.");
+    if (!post) return res.status(404).json("Post not found.");
 
     const posts = await prisma.post.findMany({
       where: { authorId: req.user.id },
       orderBy: { id: "asc" },
     });
 
-    res.render("/homepage", { errors: [], posts });
+    res.json({ post, posts });
   } catch (err) {
     console.error("ERROR with editPostGet: " + err);
-    res.status(500).send("Server error: " + err);
+    res.status(500).json("Server error: " + err);
   }
 }
 
@@ -103,7 +100,7 @@ async function editPostPut(req, res) {
     });
   } catch (err) {
     console.error("ERROR with editPostPush: " + err);
-    res.status(500).send("Server error: " + err);
+    res.status(500).json("Server error: " + err);
   }
 }
 
@@ -120,22 +117,20 @@ async function deletePost(req, res) {
       },
     });
 
-    if (!post) return res.status(404).send("Post not found.");
+    if (!post) return res.status(404).json("Post not found.");
 
     await prisma.post.delete({
       where: { id: postId },
     });
-    res.redirect("/home");
+    res.json({ message: "Post deleted", postId });
   } catch (err) {
     console.error("ERROR with deletePost: " + err);
-    res.status(500).send("Server error: " + err);
-    å;
+    res.status(500).json("Server error: " + err);
   }
 }
 
 module.exports = {
   ensureAuthenticated,
-  newPostGet,
   newPostPost,
   readPostGet,
   editPostGet,
