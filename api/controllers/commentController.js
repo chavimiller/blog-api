@@ -14,8 +14,8 @@ async function newComment(req, res) {
 
 // get editComment
 
-// post editComment
+// push editComment
 
-// post deletePost
+// delete deletePost
 
 module.exports = {};
