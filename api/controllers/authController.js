@@ -1,12 +1,7 @@
 const prisma = require("../prisma");
-
+const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-
-async function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  return res.redirect("/auth/login");
-}
 
 // get signup
 async function signUpGet(req, res) {
@@ -55,24 +50,25 @@ async function loginGet(req, res) {
   }
 }
 
-// get logout
-async function logout(req, res, next) {
-  req.logout((err) => {
+async function loginPost(req, res) {
+  passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err) return next(err);
+    if (!user) return res.status(401).json({ message: info.message });
 
-    req.session.destroy((err) => {
-      if (err) return next(err);
-
-      res.clearCookie("connect.sid");
-      res.redirect("/auth/login");
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
-  });
+
+    res.json({ token, user: { id: user.id, username: user.username } });
+  })(req, res, next);
 }
 
+async function logout(req, res, next) {}
+
 module.exports = {
-  ensureAuthenticated,
   signUpGet,
   signUpPost,
   loginGet,
+  loginPost,
   logout,
 };
