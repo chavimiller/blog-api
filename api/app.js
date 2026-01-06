@@ -12,7 +12,7 @@ app.get("/", (req, res) => res.send("Homepage"));
 
 app.use("/auth", authRouter);
 app.use("/posts", postRouter);
-app.use("/comments", commentRouter);
+app.use("/posts/:postId/comments", commentRouter);
 
 const PORT = 3000;
 app.listen(PORT, (error) => {
