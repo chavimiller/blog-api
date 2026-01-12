@@ -9,8 +9,8 @@ function App() {
   return (
     <>
       <SignUp />
-      <Home />
       <Login />
+      <Home />
       <Comment />
       <Post />
     </>
