@@ -3,6 +3,7 @@ import Comment from "./components/Comment";
 import Home from "./components/Home";
 import SignUp from "./components/signUp";
 import Login from "./components/Login";
+import Post from "./components/Post";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Home />
       <Login />
       <Comment />
+      <Post />
     </>
   );
 }
