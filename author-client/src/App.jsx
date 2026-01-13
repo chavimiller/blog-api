@@ -1,12 +1,30 @@
 import "./App.css";
-import Comment from "./components/Comment";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import Post from "./components/Post";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
 
 function App() {
-  return <></>;
+  return (
+    <Routes>
+      <Route index element={<Login />} />
+
+      <Route path="auth">
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
+      </Route>
+
+      <Route path="home" element={<Home />} />
+
+      <Route path="post">
+        <Route path="new" />
+        <Route path=":postId" />
+        <Route path=":postId/edit" />
+        <Route path=":postId/delete" />
+        <Route path=":postId/comments/:commentId/delete" />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
