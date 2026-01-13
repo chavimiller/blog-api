@@ -1,18 +1,6 @@
 const prisma = require("../lib/prisma");
 const { body, validationResult } = require("express-validator");
 
-// get newComment
-
-/*
-async function newCommentGet(req, res) {
-  try {
-  } catch (err) {
-    console.error("ERROR with newCommentGet: " + err);
-    res.status(500).json("Server error");
-  }
-}
-  */
-
 async function newCommentPost(req, res) {
   try {
     await prisma.comment.create({
@@ -28,29 +16,6 @@ async function newCommentPost(req, res) {
   }
 }
 
-/*
-
-async function editCommentGet(req, res) {
-  try {
-    const 
-  } catch (err) {
-    console.error("ERROR with newCommentGet: " + err);
-    res.status(500).send("Server error");
-  }
-}
-
-
-// push editComment
-
-async function editCommentPut(req, res) {
-  try {
-  } catch (err) {
-    console.error("ERROR with newCommentGet: " + err);
-    res.status(500).send("Server error");
-  }
-}
-
-*/
 // delete deletePost
 
 async function deleteComment(req, res) {

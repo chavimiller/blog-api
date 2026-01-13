@@ -6,17 +6,6 @@ async function ensureAuthenticated(req, res, next) {
   return res.redirect("/auth/login");
 }
 
-// CREATE
-// get newPost
-/* async function newPostGet(req, res) {
-  try {
-  } catch (err) {
-    console.error("ERROR with newPostGet: " + err);
-    res.status(500).send("Server error");
-  }
-}
-*/
-
 // post newPost
 async function newPostPost(req, res) {
   /* const errors = validationResult(req);
@@ -46,47 +35,7 @@ async function newPostPost(req, res) {
   }
 }
 
-// READ
-async function readPostGet(req, res) {
-  const postId = Number(req.params.postId);
-  const post = await prisma.post.findFirst({
-    where: {
-      id: postId,
-      userId: req.user.id,
-    },
-    include: {
-      comments: true,
-    },
-  });
-  if (!post) return res.status(404).json("Post not found.");
-
-  res.json({ post });
-}
-
 // UPDATE
-// get editPost
-async function editPostGet(req, res) {
-  try {
-    const postId = Number(req.params.postId);
-    const post = await prisma.post.findFirst({
-      where: {
-        id: postId,
-        userId: req.user.id,
-      },
-    });
-    if (!post) return res.status(404).json("Post not found.");
-
-    const posts = await prisma.post.findMany({
-      where: { authorId: req.user.id },
-      orderBy: { id: "asc" },
-    });
-
-    res.json({ post, posts });
-  } catch (err) {
-    console.error("ERROR with editPostGet: " + err);
-    res.status(500).json("Server error: " + err);
-  }
-}
 
 async function editPostPut(req, res) {
   try {
@@ -132,8 +81,6 @@ async function deletePost(req, res) {
 module.exports = {
   ensureAuthenticated,
   newPostPost,
-  readPostGet,
-  editPostGet,
   editPostPut,
   deletePost,
 };

@@ -3,23 +3,13 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
-// get signup
-async function signUpGet(req, res) {
-  try {
-    res.render("signup", { errors: [], data: [] });
-  } catch (err) {
-    console.error("ERROR with signUpGet: " + err);
-    res.status(500).send("Server error");
-  }
-}
-
 // post signup
 async function signUpPost(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render("signup", {
+    return res.json({
+      success: false,
       errors: errors.array(),
-      data: req.body,
     });
   }
 
@@ -39,17 +29,6 @@ async function signUpPost(req, res) {
     res.status(500).send("Server error");
   }
 }
-
-// get login
-async function loginGet(req, res) {
-  try {
-    res.render("login");
-  } catch (err) {
-    console.error("ERROR with loginGet: ", err);
-    res.status(500).send("Server error");
-  }
-}
-
 async function loginPost(req, res) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err) return next(err);
@@ -66,9 +45,7 @@ async function loginPost(req, res) {
 async function logout(req, res, next) {}
 
 module.exports = {
-  signUpGet,
   signUpPost,
-  loginGet,
   loginPost,
   logout,
 };
