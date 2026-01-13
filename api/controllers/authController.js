@@ -1,4 +1,4 @@
-const prisma = require("../prisma");
+const prisma = require("../lib/prisma");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -33,7 +33,7 @@ async function signUpPost(req, res) {
         password: hashedPassword,
       },
     });
-    res.redirect("/auth/login");
+    res.status(201).json({ success: true });
   } catch (err) {
     console.error("ERROR with signUpPost: " + err);
     res.status(500).send("Server error");
