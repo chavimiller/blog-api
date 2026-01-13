@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 function App() {
   return (
     <Routes>
-      <Route index element={<Login />} />
+      <Route index element={<SignUp />} />
 
       <Route path="auth">
         <Route path="login" element={<Login />} />
