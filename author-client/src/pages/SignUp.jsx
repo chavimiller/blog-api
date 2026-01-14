@@ -5,6 +5,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -12,7 +13,7 @@ const SignUp = () => {
     e.preventDefault();
 
     if (password !== confirmPass) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -29,19 +30,22 @@ const SignUp = () => {
         setUsername("");
         setPassword("");
         setConfirmPass("");
+        setError("");
 
         navigate("/auth/login");
       } else {
-        console.error(data.error || "Something went wrong, please try again.");
+        setError(data.message || "Something went wrong, please try again.");
       }
     } catch (err) {
       console.error("Signup failed, please try again" + err);
+      setError("Signup failed, please try again.");
     }
   }
 
   return (
     <>
       <h1>Sign Up</h1>
+      {error && <div className="error-message">{error}</div>}
       <form
         action="post"
         className="signup-form"

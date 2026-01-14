@@ -40,3 +40,9 @@ input {
   width: 12rem;
   background-color: bisque;
 }
+
+.error-message {
+  color: red;
+  padding: 1rem;
+  text-align: center;
+}
