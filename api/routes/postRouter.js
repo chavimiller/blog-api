@@ -6,6 +6,8 @@ const passport = require("../config/passport");
 
 postRouter.use(passport.authenticate("jwt", { session: false }));
 
+postRouter.get("/", postController.getAllPosts);
+
 postRouter.post("/new", postController.newPostPost);
 
 postRouter.put("/:postId/edit", postController.editPostPut);

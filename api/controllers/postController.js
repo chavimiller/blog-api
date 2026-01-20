@@ -1,9 +1,15 @@
 const prisma = require("../lib/prisma");
-const { body, validationResult } = require("express-validator");
+// const { body, validationResult } = require("express-validator");
 
-async function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  return res.redirect("/auth/login");
+async function getAllPosts(req, res) {
+  const publishedPosts = prisma.post.findMany({
+    where: { authorId: req.user.id, published: true },
+  });
+
+  const draftPosts = prisma.post.findMany({
+    where: { authorId: req.user.id, published: false },
+  });
+  res.json({ publishedPosts, draftPosts });
 }
 
 // post newPost
@@ -79,7 +85,7 @@ async function deletePost(req, res) {
 }
 
 module.exports = {
-  ensureAuthenticated,
+  getAllPosts,
   newPostPost,
   editPostPut,
   deletePost,
