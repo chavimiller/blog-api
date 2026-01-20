@@ -16,6 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
+app.use("/home", (req, res) => {
+  res.json({});
+});
 app.use("/posts", postRouter);
 app.use("/posts/:postId/comments", commentRouter);
 

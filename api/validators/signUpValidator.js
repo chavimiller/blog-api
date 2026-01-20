@@ -8,6 +8,8 @@ const validateUser = [
     .withMessage("Username is required.")
     .isLength({ min: 3, max: 15 })
     .withMessage("Username must be between 3 and 15 characters"),
+
+  body("isAuthor").toBoolean(),
   body("password")
     .trim()
     .notEmpty()
