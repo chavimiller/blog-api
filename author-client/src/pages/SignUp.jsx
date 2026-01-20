@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
+  const [isAuthor, setIsAuthor] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [error, setError] = useState("");
@@ -21,13 +22,14 @@ const SignUp = () => {
       const response = await fetch("http://localhost:3000/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, confirmPass }),
+        body: JSON.stringify({ username, isAuthor, password, confirmPass }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setUsername("");
+        setIsAuthor(false);
         setPassword("");
         setConfirmPass("");
         setError("");
@@ -38,7 +40,7 @@ const SignUp = () => {
       }
     } catch (err) {
       console.error("Signup failed, please try again" + err);
-      setError("Signup failed, please try again.");
+      setError("Signup failed, please try again." + err);
     }
   }
 
@@ -59,6 +61,16 @@ const SignUp = () => {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div className="form-field-group">
+          <label htmlFor="isAuthor">Sign up as a blog author</label>
+          <input
+            type="checkbox"
+            id="isAuthor"
+            checked={isAuthor}
+            onChange={(e) => setIsAuthor(e.target.checked)}
           />
         </div>
 
@@ -85,6 +97,9 @@ const SignUp = () => {
           Sign up
         </button>
       </form>
+      <div>
+        Login <Link to={"/auth/login"}>here</Link>
+      </div>
     </>
   );
 };

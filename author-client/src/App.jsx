@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route index element={<SignUp />} />
 
-      <Route path="auth">
+      <Route path="auth" element={<Outlet />}>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
       </Route>
